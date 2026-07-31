@@ -1,6 +1,8 @@
-# Platform — Phase 1 + Phase 2 + Phase 3 (asosiy qismi) ✅
+# Platform — Phase 1 + 2 + 3 + Dashboard ✅
 
-Tayyor: **Auth + Project + Script + Scene + Voice + Visual + Video Composer + Thumbnail + SEO + YouTube Integration (OAuth, upload) + Scheduler**.
+Tayyor: **Auth + Project + Script + Scene + Voice + Visual + Video Composer + Thumbnail + SEO + YouTube Integration + Scheduler + React Dashboard**.
+
+Endi platforma to'liq ishlaydi: brauzerda ochib, kirib, loyiha yaratib, skriptdan YouTube'ga yuklashgacha — hammasi UI orqali, curl kerak emas.
 
 ## Ishga tushirish (lokal)
 
@@ -115,7 +117,11 @@ Har bir so'rov `Authorization: Bearer <accessToken>` header talab qiladi (regist
 
 - `OPENAI_API_KEY` bo'lmasa, `/script` endpoint xatolik qaytaradi — bu kutilgan holat.
 - Har bir skript generatsiyasi foydalanuvchidan **1 credit** yechadi (`User.credits`, default 10). Bu keyinchalik billing tizimining fundamenti.
-- `apps/web` hozircha placeholder — to'liq React dashboard **Phase 2**da qo'shiladi.
+## Dashboard'ga kirish
+
+Docker Compose ishga tushgach: **http://localhost:5173** (yoki VPS domeningiz, Nginx orqali `/`).
+
+Ro'yxatdan o'ting → loyiha yarating → pipeline yo'lagi (Skript → Sahnalar → Ovoz → Vizual → Render → Thumbnail → SEO → Upload) bo'yicha bosqichma-bosqich boshqaring.
 
 ## Keyingi qadam — Phase 2
 
