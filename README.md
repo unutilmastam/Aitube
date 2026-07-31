@@ -1,6 +1,6 @@
-# Platform — Phase 1 + Phase 2 (Core MVP + Video Engine boshlanishi)
+# Platform — Phase 1 + Phase 2 (to'liq)
 
-Tayyor: **Auth (JWT) + Project + Script Generator + Scene Generator + Voice Generator (TTS)**.
+Tayyor: **Auth + Project + Script Generator + Scene Generator + Voice Generator (TTS) + Visual Generator (AI rasm) + Video Composer (FFmpeg worker)**.
 
 ## Ishga tushirish (lokal)
 
@@ -46,7 +46,29 @@ PATCH /api/scripts/scenes/:sceneId         # sahnani tahrirlash
 
 POST /api/scripts/scenes/:sceneId/voice    # bitta sahna uchun ovoz (TTS)
 POST /api/scripts/:scriptId/voice-all      # barcha sahnalar uchun ovoz
+
+POST /api/scripts/scenes/:sceneId/visual   # bitta sahna uchun AI rasm
+POST /api/scripts/:scriptId/visual-all     # barcha sahnalar uchun AI rasm
+
+POST /api/scripts/:scriptId/render         # video render — queue'ga qo'shadi (202 Accepted)
+GET  /api/scripts/render-jobs/:renderJobId # render progress (0-100) va yakuniy video URL
 ```
+
+## To'liq pipeline (boshidan oxirigacha)
+
+```
+1. POST /api/projects                       → loyiha yaratish
+2. POST /api/projects/:id/script             → skript (AI)
+3. POST /api/scripts/:scriptId/scenes        → sahnalarga bo'lish (AI)
+4. POST /api/scripts/:scriptId/voice-all     → har sahna uchun ovoz (ElevenLabs)
+5. POST /api/scripts/:scriptId/visual-all    → har sahna uchun AI rasm (DALL-E)
+6. POST /api/scripts/:scriptId/render        → FFmpeg worker video yig'adi (background)
+7. GET  /api/scripts/render-jobs/:id         → progress kuzatish, tugagach outputFileUrl
+```
+
+**Muhim:** 6-qadam **worker** konteynerida ishlaydi (FFmpeg og'ir CPU jarayoni), shuning uchun
+`docker compose up -d --build` paytida `worker` xizmati ham ko'tarilishi shart — aks holda
+render job abadiy "QUEUED" holatida qoladi.
 
 Har bir so'rov `Authorization: Bearer <accessToken>` header talab qiladi (register/login'dan tashqari).
 
