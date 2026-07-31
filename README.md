@@ -1,6 +1,6 @@
-# Platform — Phase 1 (Core MVP)
+# Platform — Phase 1 + Phase 2 (Core MVP + Video Engine boshlanishi)
 
-Bu bosqichda tayyor: **Auth (JWT) + Project + Script Generator (AI)**.
+Tayyor: **Auth (JWT) + Project + Script Generator + Scene Generator + Voice Generator (TTS)**.
 
 ## Ishga tushirish (lokal)
 
@@ -39,6 +39,13 @@ GET  /api/projects
 GET  /api/projects/:id
 POST /api/projects/:id/script  { topic, targetDurationSeconds? }
 PATCH /api/projects/:id/script/:scriptId  { content }
+
+POST /api/scripts/:scriptId/scenes         # skriptni sahnalarga bo'ladi (AI)
+GET  /api/scripts/:scriptId/scenes         # sahnalar ro'yxati
+PATCH /api/scripts/scenes/:sceneId         # sahnani tahrirlash
+
+POST /api/scripts/scenes/:sceneId/voice    # bitta sahna uchun ovoz (TTS)
+POST /api/scripts/:scriptId/voice-all      # barcha sahnalar uchun ovoz
 ```
 
 Har bir so'rov `Authorization: Bearer <accessToken>` header talab qiladi (register/login'dan tashqari).

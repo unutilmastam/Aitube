@@ -5,6 +5,7 @@ import rateLimit from "express-rate-limit";
 
 import authRoutes from "@/modules/auth/auth.routes";
 import projectRoutes from "@/modules/projects/project.routes";
+import sceneRoutes from "@/modules/scenes/scene.routes";
 import { errorHandler, notFoundHandler } from "@/shared/middleware/errorHandler";
 
 export function createApp(): Application {
@@ -31,6 +32,7 @@ export function createApp(): Application {
 
   app.use("/api/auth", authRoutes);
   app.use("/api/projects", projectRoutes);
+  app.use("/api/scripts", sceneRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

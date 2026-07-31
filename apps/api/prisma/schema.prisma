@@ -15,6 +15,7 @@ enum Role {
 enum ProjectStatus {
   DRAFT
   SCRIPT_READY
+  SCENES_READY
   VOICE_READY
   RENDERING
   DONE
@@ -90,8 +91,39 @@ model Script {
   audioFileUrl     String?
   createdAt        DateTime @default(now())
 
+  scenes Scene[]
+
   @@map("scripts")
   @@index([projectId])
+}
+
+enum TransitionType {
+  CUT
+  FADE
+  SLIDE
+  ZOOM
+}
+
+model Scene {
+  id            String          @id @default(uuid())
+  scriptId      String
+  script        Script          @relation(fields: [scriptId], references: [id], onDelete: Cascade)
+  order         Int
+  narration     String          @db.Text
+  visualPrompt  String          @db.Text
+  cameraMotion  String          @default("static") // static | pan-left | pan-right | zoom-in | zoom-out
+  transition    TransitionType  @default(FADE)
+  durationSec   Float           @default(5)
+  audioFileUrl  String?
+  audioDuration Float?
+  visualFileUrl String?
+  subtitleText  String?         @db.Text
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@map("scenes")
+  @@index([scriptId])
+  @@unique([scriptId, order])
 }
 
 model AuditLog {
