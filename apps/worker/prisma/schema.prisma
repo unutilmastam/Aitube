@@ -46,6 +46,7 @@ model User {
   projects      Project[]
   refreshTokens RefreshToken[]
   auditLogs     AuditLog[]
+  youtubeAccounts YoutubeAccount[]
 
   @@map("users")
 }
@@ -78,6 +79,7 @@ model Project {
   renderJobs RenderJob[]
   thumbnails Thumbnail[]
   seoMeta    SeoMeta?
+  uploadJobs UploadJob[]
 
   @@map("projects")
   @@index([userId])
@@ -179,6 +181,56 @@ model SeoMeta {
   updatedAt   DateTime @updatedAt
 
   @@map("seo_meta")
+}
+
+enum UploadVisibility {
+  PRIVATE
+  UNLISTED
+  PUBLIC
+}
+
+enum UploadStatus {
+  PENDING
+  SCHEDULED
+  UPLOADING
+  DONE
+  FAILED
+}
+
+model YoutubeAccount {
+  id                   String   @id @default(uuid())
+  userId               String
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  channelId            String
+  channelTitle         String
+  accessTokenEncrypted String   @db.Text
+  refreshTokenEncrypted String  @db.Text
+  tokenExpiresAt       DateTime
+  createdAt            DateTime @default(now())
+
+  uploadJobs UploadJob[]
+
+  @@map("youtube_accounts")
+  @@unique([userId, channelId])
+}
+
+model UploadJob {
+  id               String           @id @default(uuid())
+  projectId        String
+  project          Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  youtubeAccountId String
+  youtubeAccount   YoutubeAccount   @relation(fields: [youtubeAccountId], references: [id], onDelete: Cascade)
+  status           UploadStatus     @default(PENDING)
+  visibility       UploadVisibility @default(PRIVATE)
+  scheduledAt      DateTime?
+  youtubeVideoId   String?
+  errorLog         String?          @db.Text
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  @@map("upload_jobs")
+  @@index([projectId])
+  @@index([status, scheduledAt])
 }
 
 model AuditLog {

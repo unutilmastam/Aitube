@@ -1,6 +1,6 @@
-# Platform — Phase 1 + Phase 2 (TO'LIQ TUGADI ✅)
+# Platform — Phase 1 + Phase 2 + Phase 3 (asosiy qismi) ✅
 
-Tayyor: **Auth + Project + Script + Scene + Voice (TTS) + Visual (AI rasm) + Video Composer (FFmpeg) + Thumbnail Generator + SEO Generator**.
+Tayyor: **Auth + Project + Script + Scene + Voice + Visual + Video Composer + Thumbnail + SEO + YouTube Integration (OAuth, upload) + Scheduler**.
 
 ## Ishga tushirish (lokal)
 
@@ -51,6 +51,15 @@ PATCH /api/projects/thumbnails/:thumbnailId/select
 POST /api/projects/:id/seo                 # sarlavha, tavsif, teglar, hashtag, chapters (AI)
 GET  /api/projects/:id/seo
 
+GET  /api/youtube/connect                  # Google OAuth URL qaytaradi (brauzerda ochiladi)
+GET  /api/youtube/oauth/callback           # Google shu yerga qaytaradi (avtomatik)
+GET  /api/youtube/channels                 # ulangan kanallar ro'yxati
+DELETE /api/youtube/channels/:id           # kanalni uzish
+
+POST /api/youtube/upload                   # { projectId, youtubeAccountId, visibility, scheduledAt? }
+GET  /api/youtube/upload/:uploadJobId      # upload holati
+POST /api/youtube/upload/:uploadJobId/cancel
+
 POST /api/scripts/scenes/:sceneId/voice    # bitta sahna uchun ovoz (TTS)
 POST /api/scripts/:scriptId/voice-all      # barcha sahnalar uchun ovoz
 
@@ -73,9 +82,28 @@ GET  /api/scripts/render-jobs/:renderJobId # render progress (0-100) va yakuniy 
 7. GET  /api/scripts/render-jobs/:id         → progress kuzatish, tugagach outputFileUrl
 8. POST /api/projects/:id/thumbnails         → 3 ta thumbnail variant (parallel, video bilan bog'liq emas)
 9. POST /api/projects/:id/seo                → sarlavha/tavsif/teglar/chapters
+10. GET  /api/youtube/connect                 → Google OAuth orqali kanal ulash (bir marta)
+11. POST /api/youtube/upload                  → darhol yoki scheduledAt bilan rejalashtirib yuklash
 ```
 
-Phase 2 shu bilan **to'liq tugadi** — endi platforma "mavzu kiriting" dan "YouTube'ga yuklashga tayyor to'liq paket" (video + thumbnail + SEO) gacha ishlaydi.
+Phase 3'ning asosiy qismi shu bilan tugadi — platforma to'liq avtomatlashtirilgan: **mavzu kiritishdan YouTube'da nashr etilgan videogacha**, hech qanday qo'lda ish qilmasdan.
+
+## YouTube OAuth sozlash (upload ishlashi uchun shart)
+
+1. https://console.cloud.google.com → yangi loyiha yarating
+2. **APIs & Services → Library** → "YouTube Data API v3" ni yoqing
+3. **APIs & Services → Credentials → Create Credentials → OAuth client ID** → turi: "Web application"
+4. **Authorized redirect URIs** ga qo'shing: `http://localhost:4000/api/youtube/oauth/callback` (yoki VPS domeningiz)
+5. Chiqqan `Client ID` va `Client Secret`ni `.env` fayliga (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`) yozing
+6. `ENCRYPTION_KEY`ni tasodifiy 32+ belgili matn bilan to'ldiring (masalan: `openssl rand -hex 32`)
+
+**Eslatma:** Google OAuth ilovasi "Testing" rejimida bo'lsa, faqat siz qo'shgan test-foydalanuvchilar kira oladi — bu shaxsiy foydalanish uchun yetarli. Ommaviy SaaS qilish uchun Google verification jarayonidan o'tish kerak bo'ladi.
+
+## Qolgan Phase 3 ishlari
+
+- Analytics (video statistikasi)
+- React dashboard (hozircha faqat API — barcha amallar Postman/curl orqali)
+- Billing UI (credit sotib olish)
 
 **Muhim:** 6-qadam **worker** konteynerida ishlaydi (FFmpeg og'ir CPU jarayoni), shuning uchun
 `docker compose up -d --build` paytida `worker` xizmati ham ko'tarilishi shart — aks holda
