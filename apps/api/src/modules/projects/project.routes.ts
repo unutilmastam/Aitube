@@ -7,6 +7,13 @@ import {
   listProjectsHandler,
   updateScriptHandler,
 } from "./project.controller";
+import {
+  generateSeoHandler,
+  generateThumbnailsHandler,
+  getSeoHandler,
+  listThumbnailsHandler,
+  selectThumbnailHandler,
+} from "./meta.controller";
 
 const router = Router();
 
@@ -18,5 +25,14 @@ router.get("/:id", getProjectHandler);
 
 router.post("/:id/script", generateScriptHandler);
 router.patch("/:id/script/:scriptId", updateScriptHandler);
+
+// Thumbnail
+router.post("/:id/thumbnails", generateThumbnailsHandler);
+router.get("/:id/thumbnails", listThumbnailsHandler);
+router.patch("/thumbnails/:thumbnailId/select", selectThumbnailHandler);
+
+// SEO
+router.post("/:id/seo", generateSeoHandler);
+router.get("/:id/seo", getSeoHandler);
 
 export default router;

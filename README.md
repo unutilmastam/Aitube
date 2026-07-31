@@ -1,6 +1,6 @@
-# Platform — Phase 1 + Phase 2 (to'liq)
+# Platform — Phase 1 + Phase 2 (TO'LIQ TUGADI ✅)
 
-Tayyor: **Auth + Project + Script Generator + Scene Generator + Voice Generator (TTS) + Visual Generator (AI rasm) + Video Composer (FFmpeg worker)**.
+Tayyor: **Auth + Project + Script + Scene + Voice (TTS) + Visual (AI rasm) + Video Composer (FFmpeg) + Thumbnail Generator + SEO Generator**.
 
 ## Ishga tushirish (lokal)
 
@@ -44,6 +44,13 @@ POST /api/scripts/:scriptId/scenes         # skriptni sahnalarga bo'ladi (AI)
 GET  /api/scripts/:scriptId/scenes         # sahnalar ro'yxati
 PATCH /api/scripts/scenes/:sceneId         # sahnani tahrirlash
 
+POST /api/projects/:id/thumbnails          # 3 ta thumbnail variant (AI)
+GET  /api/projects/:id/thumbnails
+PATCH /api/projects/thumbnails/:thumbnailId/select
+
+POST /api/projects/:id/seo                 # sarlavha, tavsif, teglar, hashtag, chapters (AI)
+GET  /api/projects/:id/seo
+
 POST /api/scripts/scenes/:sceneId/voice    # bitta sahna uchun ovoz (TTS)
 POST /api/scripts/:scriptId/voice-all      # barcha sahnalar uchun ovoz
 
@@ -64,7 +71,11 @@ GET  /api/scripts/render-jobs/:renderJobId # render progress (0-100) va yakuniy 
 5. POST /api/scripts/:scriptId/visual-all    → har sahna uchun AI rasm (DALL-E)
 6. POST /api/scripts/:scriptId/render        → FFmpeg worker video yig'adi (background)
 7. GET  /api/scripts/render-jobs/:id         → progress kuzatish, tugagach outputFileUrl
+8. POST /api/projects/:id/thumbnails         → 3 ta thumbnail variant (parallel, video bilan bog'liq emas)
+9. POST /api/projects/:id/seo                → sarlavha/tavsif/teglar/chapters
 ```
+
+Phase 2 shu bilan **to'liq tugadi** — endi platforma "mavzu kiriting" dan "YouTube'ga yuklashga tayyor to'liq paket" (video + thumbnail + SEO) gacha ishlaydi.
 
 **Muhim:** 6-qadam **worker** konteynerida ishlaydi (FFmpeg og'ir CPU jarayoni), shuning uchun
 `docker compose up -d --build` paytida `worker` xizmati ham ko'tarilishi shart — aks holda

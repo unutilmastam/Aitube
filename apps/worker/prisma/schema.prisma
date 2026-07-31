@@ -76,6 +76,8 @@ model Project {
 
   scripts Script[]
   renderJobs RenderJob[]
+  thumbnails Thumbnail[]
+  seoMeta    SeoMeta?
 
   @@map("projects")
   @@index([userId])
@@ -148,6 +150,35 @@ model RenderJob {
 
   @@map("render_jobs")
   @@index([projectId])
+}
+
+model Thumbnail {
+  id         String   @id @default(uuid())
+  projectId  String
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  imageUrl   String
+  variant    Int // 1, 2, 3 — bir nechta variant taqdim etiladi
+  headline   String? // thumbnail ustiga chiqadigan qisqa matn
+  isSelected Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@map("thumbnails")
+  @@index([projectId])
+}
+
+model SeoMeta {
+  id          String   @id @default(uuid())
+  projectId   String   @unique
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title       String
+  description String   @db.Text
+  tags        String[]
+  hashtags    String[]
+  chapters    Json? // [{ time: "0:00", label: "Kirish" }, ...]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("seo_meta")
 }
 
 model AuditLog {
