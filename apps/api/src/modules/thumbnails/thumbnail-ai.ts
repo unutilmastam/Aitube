@@ -52,12 +52,11 @@ export async function generateThumbnailImage(
 
   try {
     const response = await client.images.generate({
-      model: "dall-e-3",
+      model: "gpt-image-1-mini",
       prompt,
-      size: "1792x1024",
-      quality: "hd",
+      size: "1536x1024",
+      quality: "high",
       n: 1,
-      response_format: "b64_json",
     });
 
     const b64 = response.data?.[0]?.b64_json;

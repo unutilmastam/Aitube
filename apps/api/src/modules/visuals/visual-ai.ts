@@ -11,10 +11,11 @@ interface GenerateVisualParams {
   aspectRatio?: "portrait" | "landscape"; // Shorts uchun portrait, Long video uchun landscape
 }
 
-// DALL-E o'lchamlari: portrait Shorts uchun, landscape long-video uchun
-const SIZE_MAP: Record<string, "1024x1792" | "1792x1024"> = {
-  portrait: "1024x1792",
-  landscape: "1792x1024",
+// Diqqat: DALL-E 3 2026-yil may oyida OpenAI API'dan olib tashlangan.
+// Hozir "gpt-image-1-mini" ishlatiladi — narxi ancha arzon va hali qo'llab-quvvatlanadi.
+const SIZE_MAP: Record<string, "1024x1536" | "1536x1024"> = {
+  portrait: "1024x1536",
+  landscape: "1536x1024",
 };
 
 export async function generateVisual(params: GenerateVisualParams): Promise<string> {
@@ -25,12 +26,11 @@ export async function generateVisual(params: GenerateVisualParams): Promise<stri
 
   try {
     const response = await client.images.generate({
-      model: "dall-e-3",
+      model: "gpt-image-1-mini",
       prompt: safePrompt,
       size: SIZE_MAP[aspectRatio],
-      quality: "standard",
+      quality: "medium",
       n: 1,
-      response_format: "b64_json",
     });
 
     const b64 = response.data?.[0]?.b64_json;
