@@ -60,9 +60,6 @@ services:
         condition: service_healthy
     ports:
       - "4000:4000"
-    volumes:
-      - ./apps/api:/app
-      - /app/node_modules
 
   worker:
     build:
