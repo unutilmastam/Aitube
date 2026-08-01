@@ -13,7 +13,7 @@ const updateSceneSchema = z.object({
   narration: z.string().min(1).optional(),
   visualPrompt: z.string().min(1).optional(),
   cameraMotion: z.enum(["static", "pan-left", "pan-right", "zoom-in", "zoom-out"]).optional(),
-  durationSec: z.number().min(2).max(30).optional(),
+  durationSec: z.number().min(5).max(30).optional(),
 });
 
 export async function generateScenesHandler(req: Request, res: Response, next: NextFunction) {

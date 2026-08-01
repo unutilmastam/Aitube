@@ -13,7 +13,7 @@ const sceneSchema = z.object({
       visualPrompt: z.string().min(1),
       cameraMotion: z.enum(["static", "pan-left", "pan-right", "zoom-in", "zoom-out"]),
       transition: z.enum(["CUT", "FADE", "SLIDE", "ZOOM"]),
-      durationSec: z.number().min(2).max(20),
+      durationSec: z.number().min(8).max(25),
     })
   ),
 });
@@ -43,7 +43,7 @@ Bu matnni mantiqiy sahnalarga bo'l. Har bir sahna uchun:
 - visualPrompt: shu sahna uchun AI orqali generatsiya qilinadigan original vizual tasvirning inglizcha tavsifi (rasm/video generatorga beriladigan prompt)
 - cameraMotion: static | pan-left | pan-right | zoom-in | zoom-out
 - transition: CUT | FADE | SLIDE | ZOOM
-- durationSec: taxminiy davomiylik (soniya, narration uzunligiga mos)
+- durationSec: taxminiy davomiylik (soniya, 8 dan 25 gacha — sahnalarni imkon qadar UZUNROQ qiling, chunki har sahna uchun alohida rasm generatsiya qilinadi va bu xarajatga bevosita ta'sir qiladi. Faqat mantiqiy zarurat bo'lganda yangi sahna oching)
 
 Faqat quyidagi JSON formatida javob ber:
 {"scenes": [{"narration": "...", "visualPrompt": "...", "cameraMotion": "...", "transition": "...", "durationSec": 5}]}`;

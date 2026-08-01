@@ -29,7 +29,7 @@ export async function generateVisual(params: GenerateVisualParams): Promise<stri
       model: "gpt-image-1-mini",
       prompt: safePrompt,
       size: SIZE_MAP[aspectRatio],
-      quality: "medium",
+      quality: "low", // Xarajatni kamaytirish uchun — video fon rasmi uchun "low" yetarli
       n: 1,
     });
 

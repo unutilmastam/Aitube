@@ -38,7 +38,9 @@ export async function synthesizeVoice(params: SynthesizeParams): Promise<Synthes
       },
       body: JSON.stringify({
         text,
-        model_id: "eleven_multilingual_v2",
+        // Flash v2.5 — Multilingual v2'ga qaraganda taxminan 2x arzon, sifat biroz pastroq
+        // lekin faceless YouTube kontent uchun yetarli
+        model_id: "eleven_flash_v2_5",
         voice_settings: { stability: 0.5, similarity_boost: 0.75 },
       }),
     });

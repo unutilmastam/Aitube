@@ -118,7 +118,7 @@ model Scene {
   visualPrompt  String          @db.Text
   cameraMotion  String          @default("static") // static | pan-left | pan-right | zoom-in | zoom-out
   transition    TransitionType  @default(FADE)
-  durationSec   Float           @default(5)
+  durationSec   Float           @default(12)
   audioFileUrl  String?
   audioDuration Float?
   visualFileUrl String?

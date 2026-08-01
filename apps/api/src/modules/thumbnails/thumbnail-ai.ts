@@ -55,7 +55,7 @@ export async function generateThumbnailImage(
       model: "gpt-image-1-mini",
       prompt,
       size: "1536x1024",
-      quality: "high",
+      quality: "medium", // Xarajatni kamaytirish uchun "high"dan tushirildi, sifat hali yaxshi
       n: 1,
     });
 
